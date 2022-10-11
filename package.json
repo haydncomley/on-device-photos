@@ -1,5 +1,5 @@
 {
-  "name": "project-name",
+  "name": "on-device-photos",
   "author": {
     "name": "Haydn Comley",
     "url": "https://haydncomley.com",
@@ -30,6 +30,7 @@
     "react-scripts": "5.0.1",
     "sass": "^1.52.3",
     "typescript": "^4.7.4",
+    "unity-web-link": "^0.0.2",
     "web-vitals": "^2.1.4"
   },
   "eslintConfig": {
