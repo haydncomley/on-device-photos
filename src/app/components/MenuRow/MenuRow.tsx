@@ -5,6 +5,7 @@ import styles from './MenuRow.module.scss';
 export enum MenuRowStyle {
 	Environment = 'Environment',
 	Device = 'Device',
+	Camera = 'Camera',
 }
 
 export interface IMenuRow {

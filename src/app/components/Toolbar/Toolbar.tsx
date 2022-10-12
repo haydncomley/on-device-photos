@@ -20,7 +20,7 @@ const Toolbar = ({ unity }: IToolbar) => {
 	return (
 		<div className={styles.Toolbar_Wrapper}>
 			<div className={styles.Toolbar}>
-				<span className={styles.ToolbarItem}>
+				{/* <span className={styles.ToolbarItem}>
 					<ClickableBox onClick={() => {
 						console.log('Click');
 					}}>
@@ -36,7 +36,7 @@ const Toolbar = ({ unity }: IToolbar) => {
 						}}>
 						<Icon name='control_camera' />
 					</ClickableBox>
-				</span>
+				</span> */}
 
 				<span className={styles.ToolbarSlider}>
 					<Icon name='zoom_out' />
@@ -53,16 +53,6 @@ const Toolbar = ({ unity }: IToolbar) => {
 							value={zoom} />
 					</div>
 					<Icon name='zoom_in' />
-				</span>
-
-				<span className={styles.ToolbarItem}>
-					<ClickableBox
-						disabled
-						onClick={() => {
-							console.log('Click');
-						}}>
-						<Icon name='center_focus_weak' />
-					</ClickableBox>
 				</span>
 			</div>
 

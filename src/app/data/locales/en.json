@@ -9,5 +9,9 @@
     "device_OptionBranding": "Branding / Logos",
     "device_OptionOrientation": "Orientation",
     "device_OptionOrientation_Up": "Standing",
-    "device_OptionOrientation_Down": "Flat"
+    "device_OptionOrientation_Down": "Flat",
+    "camera_Header": "Camera",
+    "camera_OptionPerspective": "Orientation",
+    "camera_OptionPerspective_Perspective": "Perspective",
+    "camera_OptionPerspective_Orthographic": "Orthographic"
 }

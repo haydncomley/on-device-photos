@@ -7,6 +7,12 @@
     width: 100%;
     height: 100%;
     display: flex;
+
+    @include theme.Mobile {
+        flex-direction: column-reverse;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
 }
 
 .StudioPage_Options {
@@ -17,6 +23,12 @@
     color: theme.Text('background');
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
     z-index: 1;
+
+    @include theme.Mobile {
+        max-width: none;
+        flex-basis: 30%;
+        overflow: scroll;
+    }
 }
 
 .StudioPage_Canvas {
@@ -29,5 +41,13 @@
         top: 0;
         height: 100%;
         width: 100%;
+
+        &:hover {
+            cursor: grab !important;
+        }
+
+        &:active {
+            cursor: grabbing !important;
+        }
     }
 }

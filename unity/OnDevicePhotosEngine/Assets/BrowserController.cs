@@ -15,6 +15,11 @@ class DeviceSettings
     public bool showDeviceMeta;
 }
 
+class CameraSettings
+{
+    public bool isPerspective;
+}
+
 public class BrowserController : MonoBehaviour
 {
     public StageController stageController;
@@ -34,6 +39,11 @@ public class BrowserController : MonoBehaviour
             stageController.isPhoneUpright = settings.isPhoneUpright;
             stageController.showDeviceMeta = settings.showDeviceMeta;
             stageController.deviceUpdateAvailable = true;
+        }));
+
+        UnityJS.Listen<CameraSettings>("setCamera", (settings =>
+        {
+            cameraController.cameraIsPerspective = settings.isPerspective;
         }));
 
         UnityJS.Listen<float>("setZoom", ((zoom) =>

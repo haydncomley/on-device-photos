@@ -21,6 +21,11 @@
     --accentContrast: #{theme.Text('studioDevice')};
 }
 
+.MenuRow_style_Camera {
+    --accent: #{theme.Color('studioCamera')};
+    --accentContrast: #{theme.Text('studioCamera')};
+}
+
 .MenuRow_header {
     font-size: 1.5rem;
     line-height: 1.4rem;
@@ -28,6 +33,11 @@
     background-color: var(--accent);
     color: var(--accentContrast);
     border-bottom: none;
+
+    @include theme.Mobile {
+        position: sticky;
+        top: 0;
+    }
 }
 
 .MenuRow_label {

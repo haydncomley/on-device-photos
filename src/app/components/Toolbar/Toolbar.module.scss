@@ -81,6 +81,10 @@ $sliderThickness: .125rem;
                 }
             }
 
+            &:active {
+                cursor: grabbing;
+            }
+
 
             &::-webkit-slider-thumb {
                 -webkit-appearance: none;
