@@ -1,9 +1,9 @@
 import { Action, AnyAction, combineReducers, configureStore, PayloadAction, ThunkAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
-import exampleReducer from './slices/example.slice';
+import generalReducer from './slices/General.slice';
 
 const appReducer = combineReducers({
-	example: exampleReducer,
+	general: generalReducer
 });
   
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

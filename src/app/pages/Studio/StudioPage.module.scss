@@ -1,5 +1,9 @@
 @use "~easy-theme" as theme;
 
+$stripePrimary: #{theme.Color('background')};
+$stripeSecondary: #{theme.Text('background', .1)};
+$stripeAngle: 45deg;
+
 .StudioPage {
     position: absolute;
     left: 0;
@@ -34,6 +38,15 @@
 .StudioPage_Canvas {
     flex: 1;
     position: relative;
+    background-image: linear-gradient($stripeAngle, $stripePrimary 25%, $stripeSecondary 25%, $stripeSecondary 50%, $stripePrimary 50%, $stripePrimary 75%, $stripeSecondary 75%, $stripeSecondary 100%);
+    background-size: 56.57px 56.57px;
+
+    &__loading {
+        canvas {
+            opacity: .5 !important;
+            pointer-events: none;
+        }
+    }
 
     canvas {
         position: absolute;
@@ -41,6 +54,7 @@
         top: 0;
         height: 100%;
         width: 100%;
+        transition: opacity .2s ease;
 
         &:hover {
             cursor: grab !important;
@@ -49,5 +63,32 @@
         &:active {
             cursor: grabbing !important;
         }
+    }
+}
+
+@keyframes loading {
+    0% {
+        transform: scaleX(-1) rotateZ(0deg);
+    }
+
+    100% {
+        transform: scaleX(-1) rotateZ(-360deg);
+    }
+}
+
+.StudioPage_CanvasLoader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    z-index: 1;
+
+    &>span {
+        animation: loading infinite linear 1s;
     }
 }

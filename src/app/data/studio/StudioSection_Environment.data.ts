@@ -20,13 +20,13 @@ export const StudioSection_Environment: IStudioSection = {
 		{
 			label: 'environment_OptionFloor',
 			key: 'showFloor',
-			default: true,
+			default: false,
 			type: MenuActionType.Toggle
 		},
 		{
 			label: 'environment_OptionBackground',
 			key: 'showSky',
-			default: true,
+			default: false,
 			type: MenuActionType.Toggle
 		},
 	],

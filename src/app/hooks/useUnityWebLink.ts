@@ -14,6 +14,7 @@ export function useUnityWebLink(canvasId: string) {
 			dataUrl: '/assets/Build/assets.data',
 			frameworkUrl: '/assets/Build/assets.framework.js',
 			loaderUrl: '/assets/Build/assets.loader.js',
+			startInvisible: true,
 			streamingAssetsUrl: '/assets/StreamingAssets'
 		});
 
