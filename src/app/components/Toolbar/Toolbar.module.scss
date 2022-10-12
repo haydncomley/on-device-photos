@@ -13,6 +13,16 @@ $sliderThickness: .125rem;
     transform: translateX(-50%);
     display: flex;
     gap: .6rem;
+    transition: .2s ease;
+}
+
+.Toolbar_WrapperHidden {
+    bottom: -5rem;
+}
+
+.Toolbar_WrapperLoading {
+    opacity: 0.75;
+    pointer-events: none;
 }
 
 .Toolbar {
@@ -20,7 +30,7 @@ $sliderThickness: .125rem;
     background: theme.Color('background');
     color: theme.Text('background');
     border-radius: $radius;
-    box-shadow: 0 .3rem .5rem 0 rgba(0, 0, 0, .15), 0 0 0 1px rgba(0, 0, 0, .02) inset;
+    box-shadow: 0 .3rem .5rem 0 rgba(0, 0, 0, .15), 0 0 0 1px theme.Text('background', .1) inset;
     user-select: none;
 }
 
@@ -38,7 +48,7 @@ $sliderThickness: .125rem;
     }
 
     &:not(:last-child) {
-        border-right: 1px solid rgba(0, 0, 0, .15);
+        border-right: 1px solid theme.Text('background', .15);
     }
 }
 
@@ -48,15 +58,11 @@ $sliderThickness: .125rem;
     justify-content: center;
     padding: .6rem;
 
-    &:not(:last-child) {
-        border-right: 1px solid rgba(0, 0, 0, .15);
-    }
-
     &>div {
         display: flex;
         align-items: center;
         position: relative;
-        margin: 0 .6rem;
+        margin: 0 -.6rem;
 
         &>span {
             position: absolute;
@@ -74,6 +80,12 @@ $sliderThickness: .125rem;
             height: $sliderThickness;
             border-radius: .5rem;
             background: theme.Text('background', .25);
+
+            @include theme.NotMobile {
+                width: 20vw;
+                max-width: 10rem;
+            }
+
 
             &:hover {
                 &::-webkit-slider-thumb {

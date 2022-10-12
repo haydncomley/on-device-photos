@@ -8,9 +8,10 @@ import Toolbar from '../../components/Toolbar/Toolbar';
 import { StudioSections } from '../../data/studio/StudioSections.data';
 import { IStudioSection, IStudioSectionOption } from '../../definitions/interfaces/IStudioSection';
 import { useUnityWebLink } from '../../hooks/useUnityWebLink';
-import { applicationLoader } from '../../state/slices/General.slice';
+import { applicationLoader, setInitialised } from '../../state/slices/General.slice';
 import { useTypedDispatch, useTypedSelector } from '../../state/state';
 import styles from './StudioPage.module.scss';
+import appDetails from '../../../../package.json';
 
 interface SectionData {
 	tag: string;
@@ -23,6 +24,7 @@ export interface IStudioPage {
 // eslint-disable-next-line no-empty-pattern
 const StudioPage = ({ }: IStudioPage) => {
 	const sections = StudioSections;
+	const version = `v${appDetails.version}${process.env.NODE_ENV === 'development' ? '-dev' : '-p'}`;
 
 	const dispatch = useTypedDispatch();
 	const { t } = useTranslation();
@@ -30,7 +32,7 @@ const StudioPage = ({ }: IStudioPage) => {
 
 	const canvasRef = useRef<HTMLCanvasElement>();
 	const isLoading = useTypedSelector(state => state.general.loading);
-	const [ initialised, setInitialised ] = useState(false);
+	const initialised = useTypedSelector(state => state.general.initialised);
 	const [ sectionData, setSectionData ] = useState<SectionData[]>([]);
 
 	useEffect(() => {
@@ -49,7 +51,7 @@ const StudioPage = ({ }: IStudioPage) => {
 		setTimeout(() => {
 			updateAllSections();
 			dispatch(applicationLoader(false));
-			setInitialised(true);
+			dispatch(setInitialised(true));
 			cnv.style.opacity = '1';
 		}, 2000);
 	}, [unityReady]);
@@ -114,8 +116,17 @@ const StudioPage = ({ }: IStudioPage) => {
 
 	return (
 		<div className={styles.StudioPage}>
-			<div className={styles.StudioPage_Options}>
+			<div className={classlist(
+				styles.StudioPage_Options,
+				isLoading && styles.StudioPage_Options__loading
+			)}>
 				{ sections.map((section, i) => renderSection(section, i))}
+
+				<a
+					className={styles.ShamelessBranding}
+					href='https://HaydnComley.com'
+					rel="noreferrer"
+					target='_blank'>{t('_madeBy')} Haydn Comley</a>
 			</div>
 			<div
 				className={classlist(
@@ -125,7 +136,9 @@ const StudioPage = ({ }: IStudioPage) => {
 				id="studio">
 				{ isLoading && <span className={styles.StudioPage_CanvasLoader}>
 					<Icon name='cached' />
-				</span> } 
+				</span> }
+
+				<span className={styles.StudioPage_Version}>{ version }</span>
 				<Toolbar unity={unity} />
 			</div>
 		</div>

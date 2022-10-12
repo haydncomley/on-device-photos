@@ -8,15 +8,15 @@ $light-theme: (
   'info': (#162531, #43a5ea, true),
 
   'studioDevice': (#6d12f5, #ffffff),
-  'studioEnvironment': (#14e996, #ffffff),
+  'studioEnvironment': (#73e81d, #ffffff),
   'studioCamera': (#e9146d, #ffffff),
 );
 
-// $dark-theme: (
-//   'background': (#1c1c1a, #ffffff)
-// );
+$dark-theme: (
+  'background': (#1c1c1a, #ffffff)
+);
 
-@include theme.UseTheme((light: $light-theme));
+@include theme.UseTheme((light: $light-theme, dark: $dark-theme));
 
 html,
 body {

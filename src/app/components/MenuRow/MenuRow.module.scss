@@ -3,9 +3,10 @@
 .MenuRow {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    border-bottom: 1px solid theme.Text('background', .15);
     font-size: 1.2rem;
     line-height: 1.2rem;
+    min-height: 1.25rem;
 
     --accent: #000000;
     --accentContrast: #ffffff;
@@ -45,7 +46,7 @@
     flex: 1;
 
     &:not(:last-child) {
-        border-right: 1px solid rgba(0, 0, 0, .15);
+        border-right: 1px solid theme.Text('background', .15);
         margin-right: .75rem;
     }
 }

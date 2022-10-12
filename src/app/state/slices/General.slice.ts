@@ -4,9 +4,11 @@ import { TypedDispatch } from '../state';
 interface IGeneralState {
 	loading: boolean,
 	loadingCount: number,
+	initialised: boolean
 }
 
 const initialState: IGeneralState = {
+	initialised: false,
 	loading: false,
 	loadingCount: 0
 };
@@ -15,6 +17,9 @@ export const generalSlice = createSlice({
 	initialState,
 	name: 'general',
 	reducers: {
+		setInitialised: (state, action: PayloadAction<boolean>) => {
+			state.initialised = action.payload;
+		},
 		setLoading: (state, action: PayloadAction<boolean>) => {
 			state.loadingCount =  Math.max(state.loadingCount + (action.payload ? 1 : -1), 0);
 			state.loading = state.loadingCount > 0;
@@ -27,7 +32,8 @@ export const generalSlice = createSlice({
 
 export const { 
 	setState,
-	setLoading
+	setLoading,
+	setInitialised
 } = generalSlice.actions;
 
 // Async Thunk

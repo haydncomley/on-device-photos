@@ -1,7 +1,8 @@
+import { classlist } from 'easy-class';
 import React, { MutableRefObject, useEffect, useState } from 'react';
 import { UnityWebLink } from 'unity-web-link';
 import { applicationLoader } from '../../state/slices/General.slice';
-import { useTypedDispatch } from '../../state/state';
+import { useTypedDispatch, useTypedSelector } from '../../state/state';
 import { fileToUrl, uploadFile } from '../../util/upload-file.util';
 import ClickableBox from '../ClickableBox/ClickableBox';
 import Icon from '../Icon/Icon';
@@ -13,6 +14,10 @@ export interface IToolbar {
 
 // eslint-disable-next-line no-empty-pattern
 const Toolbar = ({ unity }: IToolbar) => {
+	const isLoading = useTypedSelector(state => state.general.loading);
+	const initialised = useTypedSelector(state => state.general.initialised);
+	const zoomButtonDelta = .05;
+
 	const dispatch = useTypedDispatch();
 
 	const [ zoom, setZoom ] = useState(.5);
@@ -38,19 +43,18 @@ const Toolbar = ({ unity }: IToolbar) => {
 		dispatch(applicationLoader(false));
 	};
 
+	const buttonZoom = (dir: number, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		const zoomDelta = zoomButtonDelta * dir * ((e.ctrlKey || e.metaKey) ? .25 : 1);
+		setZoom((prev) => Math.max(0.05, Math.min(1, prev + zoomDelta)));
+	};
+
 
 	return (
-		<div className={styles.Toolbar_Wrapper}>
-			{/* <div className={styles.Toolbar}>
-				<span className={styles.ToolbarItem}>
-					<ClickableBox
-						accent
-						onClick={() => sendUnityAction('getScreenshot', 4)}>
-						<Icon name='screenshot' />
-					</ClickableBox>
-				</span>
-			</div> */}
-
+		<div className={classlist(
+			styles.Toolbar_Wrapper,
+			!initialised && styles.Toolbar_WrapperHidden,
+			isLoading && styles.Toolbar_WrapperLoading,
+		)}>
 			<div className={styles.Toolbar}>
 				<span className={styles.ToolbarItem}>
 					<ClickableBox
@@ -58,26 +62,13 @@ const Toolbar = ({ unity }: IToolbar) => {
 						<Icon name='screenshot' />
 					</ClickableBox>
 				</span>
-				{/* <span className={styles.ToolbarItem}>
-					<ClickableBox onClick={() => {
-						console.log('Click');
-					}}>
-						<Icon name='360' />
-					</ClickableBox>
-				</span>
 
-				<span className={styles.ToolbarItem}>
-					<ClickableBox
-						disabled
-						onClick={() => {
-							console.log('Click');
-						}}>
-						<Icon name='control_camera' />
-					</ClickableBox>
-				</span> */}
+				<ClickableBox
+					onClick={(e) => buttonZoom(-1, e)}>
+					<Icon name='zoom_out' />
+				</ClickableBox>
 
 				<span className={styles.ToolbarSlider}>
-					<Icon name='zoom_out' />
 					<div>
 						<span style={{
 							width: `calc(${100 * zoom}% - ${1 * zoom}rem)`
@@ -90,8 +81,12 @@ const Toolbar = ({ unity }: IToolbar) => {
 							type="range"
 							value={zoom} />
 					</div>
-					<Icon name='zoom_in' />
 				</span>
+
+				<ClickableBox
+					onClick={(e) => buttonZoom(1, e)}>
+					<Icon name='zoom_in' />
+				</ClickableBox>
 			</div>
 
 			<div className={styles.Toolbar}>

@@ -1,3 +1,66 @@
+$size: 1.425rem;
+
 .MenuRowAction {
     padding-right: .75rem;
+    user-select: none;
+}
+
+.Action_Toggle {
+    position: relative;
+    height: $size;
+    width: $size;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent, #000000);
+
+    input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 0;
+        opacity: 0;
+        z-index: 1;
+        transform: scale(1.5);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.Action_Dropdown {
+    position: relative;
+    height: $size;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--accent, #000000);
+
+    &>span {
+        transition: .2s ease;
+        transform-origin: 50% 50%;
+        transform: scale(.8) translateX(.2rem) translateY(.1rem);
+    }
+
+    select {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 0;
+        opacity: 0;
+        z-index: 1;
+        transform: scale(1.5);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }

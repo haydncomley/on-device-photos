@@ -24,7 +24,7 @@ public class BrowserController : MonoBehaviour
 {
     public StageController stageController;
     public CameraController cameraController;
-    void Start()
+    void Awake()
     {
         UnityJS.Listen<StageSettings>("setEnvironment", (settings =>
         {

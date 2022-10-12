@@ -15,12 +15,19 @@ $padding: .6rem;
 
     &:hover {
         cursor: pointer;
+
         // background-color: rgba(0, 0, 0, .025);
         // opacity: .7;
         // 
-        // &>* {
-        // transform: scale(.9);
-        // }
+        &>* {
+            transform: scale(1.1);
+        }
+    }
+
+    &:active {
+        &>* {
+            transform: scale(.9);
+        }
     }
 
     &__disabled {
