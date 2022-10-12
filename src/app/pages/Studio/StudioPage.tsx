@@ -24,7 +24,7 @@ export interface IStudioPage {
 // eslint-disable-next-line no-empty-pattern
 const StudioPage = ({ }: IStudioPage) => {
 	const sections = StudioSections;
-	const version = `v${appDetails.version}${process.env.NODE_ENV === 'development' ? '-dev' : '-p'}`;
+	const version = `${appDetails.version}${process.env.NODE_ENV === 'development' ? ' - DEV' : ''}`;
 
 	const dispatch = useTypedDispatch();
 	const { t } = useTranslation();
