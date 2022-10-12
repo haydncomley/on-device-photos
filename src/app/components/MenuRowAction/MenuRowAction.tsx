@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TranslationKey } from '../../definitions/interfaces/IStudioSection';
 import styles from './MenuRowAction.module.scss';
 
 export enum MenuActionType {
@@ -11,7 +13,7 @@ export interface IMenuRowAction {
 	type?: MenuActionType,
 	value?: unknown,
 	onChange?: <T>(value: T) => void,
-	options?: { label: any, value: any }[]
+	options?: { label: TranslationKey, value: any }[]
 }
 
 const MenuRowAction = ({ type, value, onChange, options }: IMenuRowAction) => {

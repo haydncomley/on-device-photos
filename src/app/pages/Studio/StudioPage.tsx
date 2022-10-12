@@ -8,6 +8,11 @@ import { IStudioSection, IStudioSectionOption } from '../../definitions/interfac
 import { useUnityWebLink } from '../../hooks/useUnityWebLink';
 import styles from './StudioPage.module.scss';
 
+interface SectionData {
+	tag: string;
+	items: { [key: string]: unknown };
+}
+
 export interface IStudioPage {
 }
 
@@ -18,14 +23,16 @@ const StudioPage = ({ }: IStudioPage) => {
 	const canvasRef = useRef<HTMLCanvasElement>();
 
 	const sections = StudioSections;
-	const sectionData: any[] = [];
+	const sectionData: SectionData[] = [];
 
 	useEffect(() => {
 		if(!unityReady || !unity.current) return;
 		const cnv = unity.current.getCanvas();
+		const cnvParent = document.querySelector('#studio');
 		canvasRef.current = cnv;
 
-		document.querySelector('#studio')!.appendChild(cnv);
+		if (!cnvParent) return;
+		cnvParent.appendChild(cnv);
 	}, [unityReady]);
 
 
@@ -40,7 +47,7 @@ const StudioPage = ({ }: IStudioPage) => {
 		});
 	}, []);
 
-	const updateSection = (section: MenuRowStyle, key: string, value: any) => {
+	const updateSection = (section: MenuRowStyle, key: string, value: unknown) => {
 		if (sectionData.length === 0) return;
 		const prev = sectionData[sections.findIndex((x) => x.style === section)].items[key];
 		if (prev == value) return;
