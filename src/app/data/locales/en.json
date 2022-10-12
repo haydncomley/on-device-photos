@@ -1,0 +1,13 @@
+{
+    "environment_Header": "Environment",
+    "environment_OptionShadows": "Shadows",
+    "environment_OptionShadows_Soft": "Soft",
+    "environment_OptionShadows_Hard": "Hard",
+    "environment_OptionFloor": "Floor",
+    "environment_OptionBackground": "Background",
+    "device_Header": "Device",
+    "device_OptionBranding": "Branding / Logos",
+    "device_OptionOrientation": "Orientation",
+    "device_OptionOrientation_Up": "Standing",
+    "device_OptionOrientation_Down": "Flat"
+}

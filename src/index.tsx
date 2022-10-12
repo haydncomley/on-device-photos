@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './app/state/state';
 import { HelmetProvider } from 'react-helmet-async';
+import './app/util/translations.util';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

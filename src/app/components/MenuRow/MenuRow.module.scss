@@ -1,0 +1,41 @@
+@use "~easy-theme" as theme;
+
+.MenuRow {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+
+    --accent: #000000;
+    --accentContrast: #ffffff;
+}
+
+.MenuRow_style_Environment {
+    --accent: #{theme.Color('studioEnvironment')};
+    --accentContrast: #{theme.Text('studioEnvironment')};
+}
+
+.MenuRow_style_Device {
+    --accent: #{theme.Color('studioDevice')};
+    --accentContrast: #{theme.Text('studioDevice')};
+}
+
+.MenuRow_header {
+    font-size: 1.5rem;
+    line-height: 1.4rem;
+    font-weight: bold;
+    background-color: var(--accent);
+    color: var(--accentContrast);
+    border-bottom: none;
+}
+
+.MenuRow_label {
+    padding: .75rem;
+    flex: 1;
+
+    &:not(:last-child) {
+        border-right: 1px solid rgba(0, 0, 0, .15);
+        margin-right: .75rem;
+    }
+}

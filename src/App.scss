@@ -1,19 +1,25 @@
 @use "~easy-theme" as theme;
+@import 'material-icons/iconfont/material-icons.scss';
+@import url('https://fonts.googleapis.com/css2?family=Darker+Grotesque:wght@500;800&display=swap');
 
 $light-theme: (
   'background': (#ffffff, #1c1c1a),
   'success': (#3c4a26, #a1c860, true),
   'info': (#162531, #43a5ea, true),
+
+  'studioDevice': (#6d12f5, #ffffff),
+  'studioEnvironment': (#14e996, #ffffff),
 );
 
-$dark-theme: (
-  'background': (#1c1c1a, #ffffff)
-);
+// $dark-theme: (
+//   'background': (#1c1c1a, #ffffff)
+// );
 
-@include theme.UseTheme((light: $light-theme, dark: $dark-theme));
+@include theme.UseTheme((light: $light-theme));
 
 html,
 body {
   background: theme.Color('background');
   color: theme.Text('background');
+  font-family: 'Darker Grotesque', sans-serif;
 }

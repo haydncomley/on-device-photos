@@ -1,0 +1,35 @@
+@use "~easy-theme" as theme;
+
+$padding: .6rem;
+
+.ClickableBox {
+    padding: $padding;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .1s ease;
+
+    &>* {
+        transition: transform .1s ease;
+    }
+
+    &:hover {
+        cursor: pointer;
+        // background-color: rgba(0, 0, 0, .025);
+        // opacity: .7;
+        // 
+        // &>* {
+        // transform: scale(.9);
+        // }
+    }
+
+    &__disabled {
+        opacity: .25;
+        pointer-events: none;
+    }
+}
+
+.ClickableBox_Accented {
+    background-color: theme.Text('background');
+    color: theme.Color('background');
+}

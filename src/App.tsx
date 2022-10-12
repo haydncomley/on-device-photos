@@ -3,17 +3,21 @@ import {
 	BrowserRouter,
 	Routes,
 	Route,
+	Navigate
 } from 'react-router-dom';
 import './App.scss';
-import LazyTestPage from './app/pages/Test/TestPage.lazy';
+import LazyStudioPage from './app/pages/Studio/StudioPage.lazy';
 
 function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route
-					element={<LazyTestPage />}
+					element={<Navigate to="/studio" />}
 					path='/' />
+				<Route
+					element={<LazyStudioPage />}
+					path='/studio' />
 			</Routes>
 		</BrowserRouter>
 	);
