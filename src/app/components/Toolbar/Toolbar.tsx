@@ -10,26 +10,27 @@ import styles from './Toolbar.module.scss';
 
 export interface IToolbar {
 	unity?: MutableRefObject<UnityWebLink | undefined>;
+	unityReady?: boolean;
 }
 
 // eslint-disable-next-line no-empty-pattern
-const Toolbar = ({ unity }: IToolbar) => {
+const Toolbar = ({ unity, unityReady }: IToolbar) => {
 	const isLoading = useTypedSelector(state => state.general.loading);
 	const initialised = useTypedSelector(state => state.general.initialised);
 	const zoomButtonDelta = .05;
 
 	const dispatch = useTypedDispatch();
 
-	const [ zoom, setZoom ] = useState(.5);
+	const [ zoom, setZoom ] = useState(.8);
 
 	const sendUnityAction = (action: string, data: unknown) => {
-		if (!unity?.current) return;
+		if (!unity?.current || !unityReady) return;
 		unity.current.Send(action, data);
 	};
 
 	useEffect(() => {
 		sendUnityAction('setZoom', 2 - (2 * zoom));
-	}, [zoom]);
+	}, [zoom, unityReady]);
 
 	const uploadScreenshot = async () => {
 		const screenshot = await uploadFile({

@@ -48,7 +48,7 @@ const MenuRowAction = ({ type, value, onChange, options }: IMenuRowAction) => {
 			</span>;
 		case MenuActionType.Dropdown:
 			return <span className={styles.Action_Dropdown}>
-				{ t(label) }
+				<p>{ t(label) }</p>
 				<Icon name='expand_more' />
 				<select
 					onChange={(e) => setCurrentValue(e.target.value)}

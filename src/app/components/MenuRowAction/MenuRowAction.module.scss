@@ -41,6 +41,11 @@ $size: 1.425rem;
     font-weight: bold;
     color: var(--accent, #000000);
 
+    &>p {
+        margin: 0;
+        margin-top: -0.25rem;
+    }
+
     &>span {
         transition: .2s ease;
         transform-origin: 50% 50%;

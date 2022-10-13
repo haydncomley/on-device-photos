@@ -1,15 +1,18 @@
 @use "~easy-theme" as theme;
 
+$borderStyle: 1px solid theme.Text('background', .15);
+
 .MenuRow {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid theme.Text('background', .15);
+    border-bottom: $borderStyle;
     font-size: 1.2rem;
     line-height: 1.2rem;
     min-height: 1.25rem;
+    overflow: hidden;
 
-    --accent: #000000;
-    --accentContrast: #ffffff;
+    --accent: #{theme.Text('background')};
+    --accentContrast: #{theme.Color('background')};
 }
 
 .MenuRow_style_Environment {
@@ -27,6 +30,11 @@
     --accentContrast: #{theme.Text('studioCamera')};
 }
 
+.MenuRow_style_General {
+    --accent: #{theme.Color('studioGeneral')};
+    --accentContrast: #{theme.Text('studioGeneral')};
+}
+
 .MenuRow_header {
     font-size: 1.5rem;
     line-height: 1.4rem;
@@ -34,6 +42,7 @@
     background-color: var(--accent);
     color: var(--accentContrast);
     border-bottom: none;
+    z-index: 1;
 
     @include theme.Mobile {
         position: sticky;
@@ -42,11 +51,11 @@
 }
 
 .MenuRow_label {
-    padding: .75rem;
+    padding: 0.5rem 0.75rem 0.75rem;
     flex: 1;
 
     &:not(:last-child) {
-        border-right: 1px solid theme.Text('background', .15);
+        border-right: $borderStyle;
         margin-right: .75rem;
     }
 }

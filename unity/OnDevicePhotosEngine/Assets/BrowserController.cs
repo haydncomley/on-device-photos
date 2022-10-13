@@ -20,6 +20,11 @@ class CameraSettings
     public bool isPerspective;
 }
 
+class GeneralSettings
+{
+    public int renderQuality;
+}
+
 public class BrowserController : MonoBehaviour
 {
     public StageController stageController;
@@ -44,6 +49,11 @@ public class BrowserController : MonoBehaviour
         UnityJS.Listen<CameraSettings>("setCamera", (settings =>
         {
             cameraController.cameraIsPerspective = settings.isPerspective;
+        }));
+
+        UnityJS.Listen<GeneralSettings>("setGeneral", (settings =>
+        {
+            QualitySettings.SetQualityLevel(settings.renderQuality, true);
         }));
 
         UnityJS.Listen<float>("setZoom", ((zoom) =>

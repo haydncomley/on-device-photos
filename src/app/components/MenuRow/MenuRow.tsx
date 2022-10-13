@@ -6,6 +6,7 @@ export enum MenuRowStyle {
 	Environment = 'Environment',
 	Device = 'Device',
 	Camera = 'Camera',
+	General = 'General',
 }
 
 export interface IMenuRow {

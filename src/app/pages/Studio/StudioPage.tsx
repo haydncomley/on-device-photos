@@ -27,8 +27,8 @@ export interface IStudioPage {
 const StudioPage = ({ }: IStudioPage) => {
 	const sections = StudioSections;
 	const version = `${appDetails.version}${process.env.NODE_ENV === 'development' ? ' - DEV' : ''}`;
-
 	useTrackPage();
+
 	const dispatch = useTypedDispatch();
 	const { t } = useTranslation();
 	const { unity, unityReady } = useUnityWebLink('unity');
@@ -36,7 +36,25 @@ const StudioPage = ({ }: IStudioPage) => {
 	const canvasRef = useRef<HTMLCanvasElement>();
 	const isLoading = useTypedSelector(state => state.general.loading);
 	const initialised = useTypedSelector(state => state.general.initialised);
+	
 	const [ sectionData, setSectionData ] = useState<SectionData[]>([]);
+	const [ sideOpen, setSideOpen ] = useState(true);
+	const [ offset, setOffset ] = useState('');
+
+	useEffect(() => {
+		if (sideOpen) {
+			setOffset('');
+			return;
+		}
+
+		const studio = document.querySelector('#studio');
+		if (!studio) return;
+	
+		setTimeout(() => {
+			const bounds = studio.getBoundingClientRect();
+			setOffset(`-${bounds.left}px`);
+		}, 301);
+	}, [sideOpen]);
 
 	useEffect(() => {
 		if(!unityReady || !unity.current) return;
@@ -122,11 +140,22 @@ const StudioPage = ({ }: IStudioPage) => {
 			<Helmet>
 				<title>OnDevice.Photos - { t('_pageStudio') }</title>
 			</Helmet>
-			<div className={classlist(
-				styles.StudioPage_Options,
-				isLoading && styles.StudioPage_Options__loading
-			)}>
+			<div
+				className={classlist(
+					styles.StudioPage_Options,
+					isLoading && styles.StudioPage_Options__loading,
+					!sideOpen && styles.StudioPage_Options__hidden
+				)}>
 				{ sections.map((section, i) => renderSection(section, i))}
+				
+				<button
+					className={classlist(
+						styles.StudioPage_OptionsTag,
+						!sideOpen && styles.StudioPage_OptionsTag__hidden
+					)}
+					onClick={() => setSideOpen(!sideOpen)}>
+					<Icon name='chevron_left' />
+				</button>
 
 				<a
 					className={styles.ShamelessBranding}
@@ -137,15 +166,21 @@ const StudioPage = ({ }: IStudioPage) => {
 			<div
 				className={classlist(
 					styles.StudioPage_Canvas,
-					(isLoading && initialised) && styles.StudioPage_Canvas__loading
+					(isLoading && initialised) && styles.StudioPage_Canvas__loading,
+					!sideOpen && styles.StudioPage_Canvas__fullscreen
 				)}
-				id="studio">
+				id="studio"
+				style={{
+					transform: offset ? `translateX(${ offset })` : ''
+				}}>
 				{ isLoading && <span className={styles.StudioPage_CanvasLoader}>
 					<Icon name='cached' />
 				</span> }
 
 				<span className={styles.StudioPage_Version}>{ version }</span>
-				<Toolbar unity={unity} />
+				<Toolbar
+					unity={unity}
+					unityReady={unityReady} />
 			</div>
 		</div>
 	);
