@@ -30,6 +30,7 @@ $stripeAngle: 45deg;
     display: flex;
     flex-direction: column;
     border-right: 1px solid theme.Text('background', .1);
+    overflow-x: hidden;
 
     &__loading {
         opacity: .75;
