@@ -1,6 +1,10 @@
 {
     "_madeBy": "Made By",
     "_undefined": "Undefined",
+    "_pageStudio": "Studio",
+    "_cookieHeader": "Cookie Consent",
+    "_cookieSubHeader": "We use cookies in order to optimise, analyse and track bugs!",
+    "_cookieAccept": "Accept",
     "environment_Header": "Environment",
     "environment_OptionShadows": "Shadows",
     "environment_OptionShadows_Soft": "Soft",

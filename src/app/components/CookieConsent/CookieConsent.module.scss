@@ -1,0 +1,73 @@
+@use "~easy-theme" as theme;
+
+$distance: 1rem;
+$radius: .3rem;
+
+.CookieConsent {
+    z-index: 10;
+    position: absolute;
+    top: $distance * 2.5;
+    right: $distance;
+    display: flex;
+    background: theme.Color('background');
+    color: theme.Text('background');
+    border-radius: $radius;
+    box-shadow: 0 .3rem .5rem 0 rgba(0, 0, 0, .15), 0 0 0 1px theme.Text('background', .1) inset;
+    user-select: none;
+    transition: .2s ease;
+    padding: .6rem;
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+    flex-direction: column;
+    max-width: 15rem;
+    text-align: center;
+    transform: scale(1);
+    transform-origin: 100% 50%;
+
+    @include theme.Mobile {
+        transform-origin: 50% 0%;
+        left: $distance;
+        max-width: none;
+        font-size: 1.5rem;
+        line-height: 1.5rem;
+    }
+
+    &__accepted {
+        transform: scale(.75) translateX(#{$distance * .75});
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    span {
+        font-size: 1rem;
+        line-height: 1em;
+        margin-bottom: .5rem;
+
+        @include theme.Mobile {
+            font-size: 1.25rem;
+            line-height: 1.25rem;
+            margin-bottom: 1rem;
+        }
+    }
+
+    button {
+        padding: .15rem .25rem .3rem;
+        background: theme.Text('background');
+        color: theme.Color('background');
+        outline: none;
+        border: none;
+        border-radius: .25rem;
+        font-family: 'Darker Grotesque', sans-serif;
+        font-size: 1rem;
+
+        @include theme.Mobile {
+            padding: .5rem .5rem .8rem;
+            font-size: 1.25rem;
+            line-height: 1.25rem;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

@@ -6,6 +6,7 @@ import {
 	Navigate
 } from 'react-router-dom';
 import './App.scss';
+import CookieConsent from './app/components/CookieConsent/CookieConsent';
 import LazyStudioPage from './app/pages/Studio/StudioPage.lazy';
 
 function App() {
@@ -19,6 +20,8 @@ function App() {
 					element={<LazyStudioPage />}
 					path='/studio' />
 			</Routes>
+
+			<CookieConsent />
 		</BrowserRouter>
 	);
 }

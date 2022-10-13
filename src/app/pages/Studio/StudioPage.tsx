@@ -12,6 +12,8 @@ import { applicationLoader, setInitialised } from '../../state/slices/General.sl
 import { useTypedDispatch, useTypedSelector } from '../../state/state';
 import styles from './StudioPage.module.scss';
 import appDetails from '../../../../package.json';
+import { Helmet } from 'react-helmet-async';
+import { useTrackPage } from '../../hooks/useTrackPage';
 
 interface SectionData {
 	tag: string;
@@ -26,6 +28,7 @@ const StudioPage = ({ }: IStudioPage) => {
 	const sections = StudioSections;
 	const version = `${appDetails.version}${process.env.NODE_ENV === 'development' ? ' - DEV' : ''}`;
 
+	useTrackPage();
 	const dispatch = useTypedDispatch();
 	const { t } = useTranslation();
 	const { unity, unityReady } = useUnityWebLink('unity');
@@ -116,6 +119,9 @@ const StudioPage = ({ }: IStudioPage) => {
 
 	return (
 		<div className={styles.StudioPage}>
+			<Helmet>
+				<title>OnDevice.Photos - { t('_pageStudio') }</title>
+			</Helmet>
 			<div className={classlist(
 				styles.StudioPage_Options,
 				isLoading && styles.StudioPage_Options__loading
