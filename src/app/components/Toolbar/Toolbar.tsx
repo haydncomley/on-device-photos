@@ -1,6 +1,8 @@
 import { classlist } from 'easy-class';
 import React, { MutableRefObject, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { UnityWebLink } from 'unity-web-link';
+import { useEventManager } from '../../hooks/useEventManager';
 import { applicationLoader } from '../../state/slices/General.slice';
 import { useTypedDispatch, useTypedSelector } from '../../state/state';
 import { fileToUrl, uploadFile } from '../../util/upload-file.util';
@@ -14,11 +16,12 @@ export interface IToolbar {
 }
 
 const Toolbar = ({ unity, unityReady }: IToolbar) => {
+	const dispatch = useTypedDispatch();
+	const { t } = useTranslation();
+	const resetEvent = useEventManager('scene-reset');
 	const isLoading = useTypedSelector(state => state.general.loading);
 	const initialised = useTypedSelector(state => state.general.initialised);
 	const zoomButtonDelta = .05;
-
-	const dispatch = useTypedDispatch();
 
 	const [ zoom, setZoom ] = useState(.8);
 
@@ -30,6 +33,10 @@ const Toolbar = ({ unity, unityReady }: IToolbar) => {
 	useEffect(() => {
 		sendUnityAction('setZoom', 2 - (2 * zoom));
 	}, [zoom, unityReady]);
+
+	const reloadScene = () => {
+		resetEvent.send();
+	};
 
 	const uploadScreenshot = async () => {
 		const screenshot = await uploadFile({
@@ -48,7 +55,6 @@ const Toolbar = ({ unity, unityReady }: IToolbar) => {
 		setZoom((prev) => Math.max(0.05, Math.min(1, prev + zoomDelta)));
 	};
 
-
 	return (
 		<div className={classlist(
 			styles.Toolbar_Wrapper,
@@ -58,16 +64,25 @@ const Toolbar = ({ unity, unityReady }: IToolbar) => {
 			<div className={styles.Toolbar}>
 				<span
 					className={styles.ToolbarItem}
-					data-tooltip="Upload Screenshot">
+					data-tooltip={t('_tooltipUpload')}>
 					<ClickableBox
 						onClick={uploadScreenshot}>
 						<Icon name='screenshot' />
 					</ClickableBox>
 				</span>
 
+				<span
+					className={styles.ToolbarItem}
+					data-tooltip={t('_tooltipReload')}>
+					<ClickableBox
+						onClick={reloadScene}>
+						<Icon name='replay' />
+					</ClickableBox>
+				</span>
+
 				<ClickableBox
 					onClick={(e) => buttonZoom(-1, e)}
-					tooltip="Zoom Out">
+					tooltip={t('_tooltipZoomOut')}>
 					<Icon name='zoom_out' />
 				</ClickableBox>
 
@@ -88,7 +103,7 @@ const Toolbar = ({ unity, unityReady }: IToolbar) => {
 
 				<ClickableBox
 					onClick={(e) => buttonZoom(1, e)}
-					tooltip="Zoom In">
+					tooltip={t('_tooltipZoomIn')}>
 					<Icon name='zoom_in' />
 				</ClickableBox>
 			</div>
@@ -96,7 +111,7 @@ const Toolbar = ({ unity, unityReady }: IToolbar) => {
 			<div className={styles.Toolbar}>
 				<span
 					className={styles.ToolbarItem}
-					data-tooltip="Capture">
+					data-tooltip={t('_tooltipCapture')}>
 					<ClickableBox
 						accent
 						onClick={() => {

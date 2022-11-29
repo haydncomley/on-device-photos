@@ -1,12 +1,12 @@
 @use "~easy-theme" as theme;
 
-$distance: 1rem;
+$distance: .75rem;
 $radius: .3rem;
 
 .CookieConsent {
     z-index: 10;
     position: absolute;
-    top: $distance * 2.5;
+    top: $distance;
     right: $distance;
     display: flex;
     background: theme.Color('background');

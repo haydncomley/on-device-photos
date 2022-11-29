@@ -1,8 +1,9 @@
 import { classlist } from 'easy-class';
-import React, { MutableRefObject, useEffect } from 'react';
+import React, { MutableRefObject, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UnityWebLink } from 'unity-web-link';
 import { IScene } from '../../definitions/interfaces/IScene';
+import { useEventManager } from '../../hooks/useEventManager';
 import { setCurrentScene, setScene } from '../../state/slices/Scenes.slice';
 import { useTypedDispatch, useTypedSelector } from '../../state/state';
 import ClickableBox from '../ClickableBox/ClickableBox';
@@ -17,28 +18,43 @@ export interface ISceneSelector {
 const SceneSelector = ({ unity, unityReady }: ISceneSelector) => {
 	const dispatch = useTypedDispatch();
 	const { t } = useTranslation();
+	const resetEvent = useEventManager('scene-reset');
 	const initialised = useTypedSelector(state => state.general.initialised);
 	const scene = useTypedSelector((state) => state.scenes.current);
 	const scenes = useTypedSelector((state) => state.scenes.saved);
 
-	useEffect(() => {
-		if (!unity?.current || !unityReady || !initialised) return;
+	const sendUnityAction = useCallback((action: string, data?: unknown) => {
+		if (!unity?.current || !unityReady) return;
+		unity.current.Send(action, data);
+	}, [unity, unityReady]);
+
+	const reloadCurrentScene = useCallback(() => {
 		// Camera
 		const cameraRotation = scene?.camera_position;
 		const cameraZoom = scene?.camera_zoom;
 		// Device
 		const deviceRotation = scene?.device_position;
-		
+
 		if (cameraRotation) sendUnityAction('setCameraRotation', cameraRotation);
 		if (cameraZoom) sendUnityAction('setZoom', cameraZoom);
 		if (deviceRotation) sendUnityAction('setDeviceRotation', deviceRotation);
+	}, [scene, sendUnityAction]);
 
+	useEffect(() => {
+		if (!initialised) return;
+		const resetEventDispose = resetEvent.listen(() => {
+			reloadCurrentScene();
+		});
+
+		return () => {
+			resetEventDispose();
+		};
+	}, [initialised, reloadCurrentScene, scene]);
+
+	useEffect(() => {
+		if (!unity?.current || !unityReady || !initialised) return;
+		reloadCurrentScene();
 	}, [initialised, unityReady, scene]);
-
-	const sendUnityAction = (action: string, data?: unknown) => {
-		if (!unity?.current || !unityReady) return;
-		unity.current.Send(action, data);
-	};
 
 	useEffect(() => {
 		if (!unityReady || !unity?.current) return;
@@ -69,7 +85,6 @@ const SceneSelector = ({ unity, unityReady }: ISceneSelector) => {
 				return;
 			}
 		}
-
 
 		const sceneDetails: IScene = scene || {
 			id: String(Math.random()).slice(2),
@@ -118,7 +133,7 @@ const SceneSelector = ({ unity, unityReady }: ISceneSelector) => {
 				onClick={saveScene}
 				tooltip='Save Scene'
 				tooltipPosition="bottom">
-				<Icon name='save' />
+				<Icon name={scene ? 'save' : 'add'} />
 			</ClickableBox>
 		</div>
 	);

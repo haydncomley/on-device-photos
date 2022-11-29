@@ -35,6 +35,10 @@ export const scenesSlice = createSlice({
 			}
 
 			state.saved = [...all];
+
+			if (state.current?.id === action.payload.id) {
+				state.current = scene;
+			}
 		},
 		setState: (state, action: PayloadAction<IScenesState>) => {
 			state = action.payload;
