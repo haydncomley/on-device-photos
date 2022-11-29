@@ -11,6 +11,7 @@ const appReducer = combineReducers({
 	scenes: scenesReducer
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const rootReducer = (state: any, action: PayloadAction<any>) => {
 	return appReducer(state, action);
 };
