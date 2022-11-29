@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 
 const globalEvents: { [key: string]: {
     callbacks: {
@@ -30,16 +30,31 @@ const createEventHandler = <T>(id: string, callback: (args?: T) => void) => {
 };
 
 export const useEventManager = <T>(id: string) => {
-	const globalEventsRef = useRef(globalEvents);
+	const globalEventsRef = globalEvents;
 
 	return {
 		listen: (callback: (data?: T) => void) => {
 			return createEventHandler(id, callback);
 		},
 		send: (args?: T) => {
-			const event = globalEventsRef.current[id];
+			const event = globalEventsRef[id];
 			if (!event) return;
 			event.callbacks.forEach((x) => x.callback(args));
 		}
 	};
+};
+
+export const useEventListener = <T>(id: string, callback: (value?: T) => void, deps: React.DependencyList) => {
+	const listener = useEventManager<T>(id);
+	const eventCallback = useCallback((value: T) => callback(value), deps);
+
+	useEffect(() => {
+		const listenDispose = listener.listen((value: any) => {
+			eventCallback(value);
+		});
+
+		return () => {
+			listenDispose();
+		};
+	}, [eventCallback]);
 };

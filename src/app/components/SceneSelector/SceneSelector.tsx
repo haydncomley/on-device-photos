@@ -3,7 +3,7 @@ import React, { MutableRefObject, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UnityWebLink } from 'unity-web-link';
 import { IScene } from '../../definitions/interfaces/IScene';
-import { useEventManager } from '../../hooks/useEventManager';
+import { useEventListener, useEventManager } from '../../hooks/useEventManager';
 import { setCurrentScene, setScene } from '../../state/slices/Scenes.slice';
 import { useTypedDispatch, useTypedSelector } from '../../state/state';
 import ClickableBox from '../ClickableBox/ClickableBox';
@@ -18,7 +18,7 @@ export interface ISceneSelector {
 const SceneSelector = ({ unity, unityReady }: ISceneSelector) => {
 	const dispatch = useTypedDispatch();
 	const { t } = useTranslation();
-	const resetEvent = useEventManager('scene-reset');
+	const saveSceneEvent = useEventManager('save-scene');
 	const initialised = useTypedSelector(state => state.general.initialised);
 	const scene = useTypedSelector((state) => state.scenes.current);
 	const scenes = useTypedSelector((state) => state.scenes.saved);
@@ -29,27 +29,16 @@ const SceneSelector = ({ unity, unityReady }: ISceneSelector) => {
 	}, [unity, unityReady]);
 
 	const reloadCurrentScene = useCallback(() => {
-		// Camera
 		const cameraRotation = scene?.camera_position;
-		const cameraZoom = scene?.camera_zoom;
-		// Device
 		const deviceRotation = scene?.device_position;
 
 		if (cameraRotation) sendUnityAction('setCameraRotation', cameraRotation);
-		if (cameraZoom) sendUnityAction('setZoom', cameraZoom);
 		if (deviceRotation) sendUnityAction('setDeviceRotation', deviceRotation);
 	}, [scene, sendUnityAction]);
 
-	useEffect(() => {
-		if (!initialised) return;
-		const resetEventDispose = resetEvent.listen(() => {
-			reloadCurrentScene();
-		});
-
-		return () => {
-			resetEventDispose();
-		};
-	}, [initialised, reloadCurrentScene, scene]);
+	useEventListener('scene-reset', () => {
+		reloadCurrentScene();
+	}, [reloadCurrentScene, scene]);
 
 	useEffect(() => {
 		if (!unity?.current || !unityReady || !initialised) return;
@@ -99,8 +88,9 @@ const SceneSelector = ({ unity, unityReady }: ISceneSelector) => {
 
 		dispatch(setScene(sceneDetails));
 		dispatch(setCurrentScene(sceneDetails));
-
+		
 		setTimeout(() => {
+			saveSceneEvent.send();
 			sendUnityAction('getCameraRotation');
 			sendUnityAction('getDeviceRotation');
 		}, 20);
