@@ -14,6 +14,7 @@ import styles from './StudioPage.module.scss';
 import appDetails from '../../../../package.json';
 import { Helmet } from 'react-helmet-async';
 import { useTrackPage } from '../../hooks/useTrackPage';
+import SceneSelector from '../../components/SceneSelector/SceneSelector';
 
 interface SectionData {
 	tag: string;
@@ -39,21 +40,37 @@ const StudioPage = ({ }: IStudioPage) => {
 	
 	const [ sectionData, setSectionData ] = useState<SectionData[]>([]);
 	const [ sideOpen, setSideOpen ] = useState(true);
-	const [ offset, setOffset ] = useState('');
+	const [ leftAmount, setLeftAmount ] = useState(0);
 
 	useEffect(() => {
+		const studio = document.querySelector<HTMLDivElement>('#studio');
+		const bounds = studio?.getBoundingClientRect();
+		if (!studio || !bounds) return;
+
 		if (sideOpen) {
-			setOffset('');
+			studio.style.left = `${leftAmount}px`;
+			
+			setTimeout(() => {
+				studio.style.position = '';
+				studio.style.top = '';
+				studio.style.bottom = '';
+				studio.style.left = '';
+				studio.style.right = '';
+			}, 300);
 			return;
 		}
 
-		const studio = document.querySelector('#studio');
-		if (!studio) return;
-	
-		setTimeout(() => {
-			const bounds = studio.getBoundingClientRect();
-			setOffset(`-${bounds.left}px`);
-		}, 301);
+		setLeftAmount(bounds.left);
+
+		studio.style.position = 'absolute';
+		studio.style.top = '0';
+		studio.style.bottom = '0';
+		studio.style.left = `${bounds.left}px`;
+		studio.style.right = '0';
+		
+		requestAnimationFrame(() => {
+			studio.style.left = '0';
+		});
 	}, [sideOpen]);
 
 	useEffect(() => {
@@ -153,6 +170,8 @@ const StudioPage = ({ }: IStudioPage) => {
 						styles.StudioPage_OptionsTag,
 						!sideOpen && styles.StudioPage_OptionsTag__hidden
 					)}
+					data-tooltip={sideOpen ? t('_studioDrawerHide') : t('_studioDrawerOpen')}
+					data-tooltip-position={ sideOpen ? 'top' : 'right' }
 					onClick={() => setSideOpen(!sideOpen)}>
 					<Icon name='chevron_left' />
 				</button>
@@ -169,19 +188,20 @@ const StudioPage = ({ }: IStudioPage) => {
 					(isLoading && initialised) && styles.StudioPage_Canvas__loading,
 					!sideOpen && styles.StudioPage_Canvas__fullscreen
 				)}
-				id="studio"
-				style={{
-					transform: offset ? `translateX(${ offset })` : ''
-				}}>
+				id="studio">
 				{ isLoading && <span className={styles.StudioPage_CanvasLoader}>
 					<Icon name='cached' />
 				</span> }
 
-				<span className={styles.StudioPage_Version}>{ version }</span>
 				<Toolbar
 					unity={unity}
 					unityReady={unityReady} />
+				<SceneSelector
+					unity={unity}
+					unityReady={unityReady}/>
 			</div>
+
+			<span className={styles.StudioPage_Version}>{ version }</span>
 		</div>
 	);
 };

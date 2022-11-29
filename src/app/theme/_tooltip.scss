@@ -1,0 +1,71 @@
+@use "~easy-theme" as theme;
+
+@include theme.NotMobile {
+    *[data-tooltip] {
+        &::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            bottom: 100%;
+            transform: translate(-50%, -0.5rem);
+            transform-origin: 50% 50%;
+            padding: 0.2rem 0.5rem;
+            background: theme.Text('background', .75);
+            backdrop-filter: blur(.5rem);
+            color: theme.Color('background');
+            border-radius: 0.3rem;
+            font-weight: bold;
+            line-height: 1em;
+            padding-bottom: 0.35em;
+            display: block;
+            white-space: nowrap;
+            transition: .1s ease-out;
+            pointer-events: none;
+        }
+
+        &:not(:hover)::after {
+            opacity: 0;
+            transform: translate(-50%, -0.5rem) scale(.9);
+        }
+
+        &[data-tooltip-position="bottom"] {
+            &::after {
+                bottom: auto;
+                top: 100%;
+                transform: translate(-50%, 0.5rem);
+            }
+
+            &:not(:hover)::after {
+                transform: translate(-50%, 0.5rem) scale(.9);
+            }
+        }
+
+        &[data-tooltip-position="right"] {
+            &::after {
+                bottom: 50%;
+                left: 100%;
+                transform: translate(0.5rem, 50%);
+            }
+
+            &:not(:hover)::after {
+                bottom: 50%;
+                left: 100%;
+                transform: translate(0.5rem, 50%) scale(.9);
+            }
+        }
+
+        &[data-tooltip-position="left"] {
+            &::after {
+                bottom: 50%;
+                right: 100%;
+                transform: translate(-0.5rem, 50%);
+            }
+
+            &:not(:hover)::after {
+                bottom: 50%;
+                right: 100%;
+                transform: translate(-0.5rem, 50%) scale(.9);
+            }
+        }
+    }
+}

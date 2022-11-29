@@ -8,6 +8,8 @@ $padding: .6rem;
     align-items: center;
     justify-content: center;
     transition: opacity .1s ease;
+    border-radius: inherit;
+    position: relative;
 
     &>* {
         transition: transform .1s ease;
@@ -16,9 +18,6 @@ $padding: .6rem;
     &:hover {
         cursor: pointer;
 
-        // background-color: rgba(0, 0, 0, .025);
-        // opacity: .7;
-        // 
         &>* {
             transform: scale(1.1);
         }

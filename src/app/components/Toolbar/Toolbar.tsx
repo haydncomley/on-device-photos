@@ -13,7 +13,6 @@ export interface IToolbar {
 	unityReady?: boolean;
 }
 
-// eslint-disable-next-line no-empty-pattern
 const Toolbar = ({ unity, unityReady }: IToolbar) => {
 	const isLoading = useTypedSelector(state => state.general.loading);
 	const initialised = useTypedSelector(state => state.general.initialised);
@@ -57,7 +56,9 @@ const Toolbar = ({ unity, unityReady }: IToolbar) => {
 			isLoading && styles.Toolbar_WrapperLoading,
 		)}>
 			<div className={styles.Toolbar}>
-				<span className={styles.ToolbarItem}>
+				<span
+					className={styles.ToolbarItem}
+					data-tooltip="Upload Screenshot">
 					<ClickableBox
 						onClick={uploadScreenshot}>
 						<Icon name='screenshot' />
@@ -65,7 +66,8 @@ const Toolbar = ({ unity, unityReady }: IToolbar) => {
 				</span>
 
 				<ClickableBox
-					onClick={(e) => buttonZoom(-1, e)}>
+					onClick={(e) => buttonZoom(-1, e)}
+					tooltip="Zoom Out">
 					<Icon name='zoom_out' />
 				</ClickableBox>
 
@@ -85,13 +87,16 @@ const Toolbar = ({ unity, unityReady }: IToolbar) => {
 				</span>
 
 				<ClickableBox
-					onClick={(e) => buttonZoom(1, e)}>
+					onClick={(e) => buttonZoom(1, e)}
+					tooltip="Zoom In">
 					<Icon name='zoom_in' />
 				</ClickableBox>
 			</div>
 
 			<div className={styles.Toolbar}>
-				<span className={styles.ToolbarItem}>
+				<span
+					className={styles.ToolbarItem}
+					data-tooltip="Capture">
 					<ClickableBox
 						accent
 						onClick={() => {

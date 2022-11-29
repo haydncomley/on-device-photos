@@ -188,6 +188,11 @@ public class CameraController : MonoBehaviour
         targetCameraRotation = Vector3.zero;
     }
 
+    public void SetCameraRotation(Vector3 location) {
+        forcingCameraRotation = true;
+        targetCameraRotation = location;
+    }
+
     public void ResetDeviceRotation()
     {
         forcingDeviceRotation = true;

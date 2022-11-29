@@ -1,0 +1,72 @@
+@use "~easy-theme" as theme;
+
+$size: 1.425rem;
+
+.SceneSelector {
+    position: absolute;
+    left: 50%;
+    padding: 0.5rem 0.5rem .5rem 1rem;
+    transform: translateX(-50%) translateY(50%);
+    height: 1.25rem;
+    background: theme.Color('background');
+    color: theme.Text('background');
+    border-radius: .3rem;
+    box-shadow: 0 .3rem .5rem 0 rgba(0, 0, 0, .15), 0 0 0 1px theme.Text('background', .1) inset;
+    z-index: 10;
+    transition: .2s ease;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+
+    >div {
+        border-radius: .3rem;
+        z-index: 1;
+    }
+}
+
+.SceneSelector_hide {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.SceneSelector_Dropdown {
+    position: relative;
+    height: $size;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: theme.Text('background');
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    &>p {
+        margin: 0;
+        margin-top: -0.25rem;
+        white-space: nowrap;
+    }
+
+    &>span {
+        transition: .2s ease;
+        transform-origin: 50% 50%;
+        transform: scale(.8) translateX(.2rem) translateY(.1rem);
+    }
+
+    select {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 0;
+        opacity: 0;
+        z-index: 1;
+        transform: scale(1.5);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

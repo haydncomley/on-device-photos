@@ -12,6 +12,8 @@ $stripeAngle: 45deg;
     height: 100%;
     display: flex;
     overflow: hidden;
+    background-image: linear-gradient($stripeAngle, $stripePrimary 25%, $stripeSecondary 25%, $stripeSecondary 50%, $stripePrimary 50%, $stripePrimary 75%, $stripeSecondary 75%, $stripeSecondary 100%), ;
+    background-size: 56.57px 56.57px;
 
     @include theme.Mobile {
         flex-direction: column-reverse;
@@ -58,7 +60,7 @@ $stripeAngle: 45deg;
 
 .StudioPage_OptionsTag {
     position: absolute;
-    top: .5rem;
+    bottom: 1.7rem;
     left: 100%;
     background-color: theme.Color('background');
     color: theme.Text('background');
@@ -97,8 +99,6 @@ $stripeAngle: 45deg;
 .StudioPage_Canvas {
     flex: 1;
     position: relative;
-    background-image: linear-gradient($stripeAngle, $stripePrimary 25%, $stripeSecondary 25%, $stripeSecondary 50%, $stripePrimary 50%, $stripePrimary 75%, $stripeSecondary 75%, $stripeSecondary 100%), ;
-    background-size: 56.57px 56.57px;
     overflow: hidden;
     transition: .3s cubic-bezier(0.4, 0.0, 0.2, 1);
 
@@ -109,7 +109,7 @@ $stripeAngle: 45deg;
         top: 0;
         height: 100%;
         width: 100%;
-        background: radial-gradient(#{theme.Color('background', .75)}, transparent);
+        // background: radial-gradient(#{theme.Color('background', .75)}, transparent);
     }
 
     &__loading {
@@ -121,9 +121,9 @@ $stripeAngle: 45deg;
 
     &__fullscreen {
         @include theme.NotMobile {
-            transition: .3s linear, transform .3s cubic-bezier(0.4, 0.0, 0.2, 1);
-            flex-shrink: 0;
-            flex-basis: 100%;
+            // transition: .3s linear, transform .3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            // flex-shrink: 0;
+            // flex-basis: 100%;
         }
     }
 

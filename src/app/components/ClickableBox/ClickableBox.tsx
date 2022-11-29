@@ -5,10 +5,12 @@ import styles from './ClickableBox.module.scss';
 export interface IClickableBox {
 	onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void,
 	disabled?: boolean,
-	accent?: boolean
+	accent?: boolean,
+	tooltip?: string
+	tooltipPosition?: string
 }
 
-const ClickableBox = ({ children, onClick, disabled, accent }: IClickableBox & { children: React.ReactNode }) => {
+const ClickableBox = ({ children, onClick, disabled, accent, tooltip, tooltipPosition }: IClickableBox & { children: React.ReactNode }) => {
 	return (
 		<div
 			className={classlist(
@@ -16,6 +18,8 @@ const ClickableBox = ({ children, onClick, disabled, accent }: IClickableBox & {
 				disabled && styles.ClickableBox__disabled,
 				accent && styles.ClickableBox_Accented
 			)}
+			data-tooltip={tooltip}
+			data-tooltip-position={tooltipPosition}
 			onClick={(e) => {
 				if(onClick) onClick(e);
 			}}>
