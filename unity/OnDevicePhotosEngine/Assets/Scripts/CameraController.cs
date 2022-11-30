@@ -52,24 +52,35 @@ public class CameraController : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             movingDevice = false;
+            targetCameraRotation = transform.eulerAngles;
             MoveCamera();
         }
 
         if (Input.GetMouseButton(1))
         {
             movingDevice = true;
+            targetDeviceRotation = device.eulerAngles;
             MoveCamera();
         }
 
         if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
         {
             ZeroCameraMovement();
+            targetCameraRotation = transform.eulerAngles;
+            targetDeviceRotation = device.eulerAngles;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             ScreenCapture.CaptureScreenshot("Picture.png");
             Debug.Log(Application.persistentDataPath);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SetCameraRotation(new Vector3(
+                45, 45, 0
+            ));
         }
 
         isStepping = Input.GetKey(KeyCode.LeftShift);
@@ -90,7 +101,6 @@ public class CameraController : MonoBehaviour
             if (Vector3.Distance(transform.eulerAngles, targetCameraRotation) < 0.01)
             {
                 forcingCameraRotation = false;
-                targetCameraRotation = targetDeviceRotation;
             }
         }
 
@@ -105,7 +115,6 @@ public class CameraController : MonoBehaviour
             if (Vector3.Distance(device.eulerAngles, targetDeviceRotation) < 0.01)
             {
                 forcingDeviceRotation = false;
-                targetDeviceRotation = targetDeviceRotation;
             }
         }
     }
@@ -220,6 +229,14 @@ public class CameraController : MonoBehaviour
 
     private float ClampAngle(float value)
     {
-        return Mathf.Clamp(value, -90, 90);
+        // return Mathf.Clamp(value, -90, 90);
+        if (value > 180)
+        {
+            return Mathf.Clamp(value, 270, 361);
+        }
+        else
+        {
+            return Mathf.Clamp(value, -1, 90);
+        }
     }
 }

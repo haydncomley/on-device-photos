@@ -242,8 +242,6 @@ const StudioPage = ({ }: IStudioPage) => {
 					unity={unity}
 					unityReady={unityReady}/>
 			</div>
-
-			<span className={styles.StudioPage_Version}>{ version }</span>
 		</div>
 	);
 };
