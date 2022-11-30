@@ -13,4 +13,7 @@ export default defineConfig({
 		viteTsconfigPaths(),
 		svgrPlugin()
 	],
+	server: {
+		open: true,
+	},
 });

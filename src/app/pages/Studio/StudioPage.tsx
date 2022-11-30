@@ -125,7 +125,6 @@ const StudioPage = ({ }: IStudioPage) => {
 
 		setSectionData((last) => {
 			const data = JSON.parse(JSON.stringify(last));
-			console.log('TEST TEST', data, key, data[sections.findIndex((x) => x.style === section)].items[key], newValue);
 			data[sections.findIndex((x) => x.style === section)].items[key] = newValue;
 
 			if (!unity.current) return data;
@@ -138,28 +137,15 @@ const StudioPage = ({ }: IStudioPage) => {
 	}, [setSectionData, sectionData, unity]);
 
 	const reloadCurrentScene = useCallback(() => {
-		console.log('Called Reset');
 		if (scene?.sections) {
-			console.log(scene!.sections![1].items);
+			scene.sections.forEach((section) => {
+				if (!unity.current) return;
+				const action = `set${section.tag}`;
+				unity.current.Send(action, section.items);
+			});
+			setSectionData(scene.sections);
 		}
-		// setSectionData(scene.sections);
-			
-		// setTimeout(() => {
-		// 	console.log('Updating');
-		// 	updateAllSections();
-		// }, 200);
-		// }
-
-		// 	setTimeout(() => {
-		// 		updateAllSections();
-		// 	}, 20);
-		// }
-		// const cameraRotation = scene?.camera_position;
-		// const deviceRotation = scene?.device_position;
-
-		// if (cameraRotation) sendUnityAction('setCameraRotation', cameraRotation);
-		// if (deviceRotation) sendUnityAction('setDeviceRotation', deviceRotation);
-	}, [scene, setSectionData]);
+	}, [scene, setSectionData, unity]);
 
 	useEventListener('scene-reset', () => {
 		reloadCurrentScene();
@@ -172,7 +158,6 @@ const StudioPage = ({ }: IStudioPage) => {
 
 	useEventListener('save-scene', () => {
 		if (scene?.id) {
-			console.log('Save Scene Sections', sectionData);
 			dispatch(setScene({
 				id: scene?.id,
 				sections: sectionData
@@ -181,6 +166,10 @@ const StudioPage = ({ }: IStudioPage) => {
 	}, [scene, sectionData]);
 
 	const renderSectionItem = useCallback((item: IStudioSectionOption, style: MenuRowStyle, index: number) => {
+		const hasValue = sectionData.map((x) => x.items[item.key]).filter((x) => x !== undefined) || [];
+		let value = item.default;
+		if (hasValue.length === 1) value = hasValue[0];
+
 		return <MenuRow
 			key={index}
 			label={t(item.label)}
@@ -189,9 +178,9 @@ const StudioPage = ({ }: IStudioPage) => {
 				onChange={(e) => updateSection(style, item.key, e)}
 				options={item.options}
 				type={item.type}
-				value={item.default} />
+				value={value} />
 		</MenuRow>;
-	}, []);
+	}, [sectionData]);
 
 	const renderSection = useCallback((section: IStudioSection, index: number) => {
 		return <span key={index}>
@@ -201,7 +190,7 @@ const StudioPage = ({ }: IStudioPage) => {
 				rowStyle={section.style} />
 			{ section.options.map((item, i) => renderSectionItem(item, section.style, i)) }
 		</span>;
-	}, []);
+	}, [sectionData]);
 
 	return (
 		<div className={styles.StudioPage}>

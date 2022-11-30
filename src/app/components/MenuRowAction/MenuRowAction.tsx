@@ -24,6 +24,10 @@ const MenuRowAction = ({ type, value, onChange, options }: IMenuRowAction) => {
 	const [ label, setLabel ] = useState<TranslationKey>('_undefined');
 
 	useEffect(() => {
+		setCurrentValue(value);
+	}, [value]);
+
+	useEffect(() => {
 		if (onChange) onChange(currentValue);
 	}, [currentValue]);
 
