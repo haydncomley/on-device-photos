@@ -6,6 +6,7 @@ import {
 	Navigate
 } from 'react-router-dom';
 import './App.scss';
+import 'material-icons/iconfont/material-icons.css';
 import CookieConsent from './app/components/CookieConsent/CookieConsent';
 import LazyStudioPage from './app/pages/Studio/StudioPage.lazy';
 

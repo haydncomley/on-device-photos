@@ -5,12 +5,12 @@
     "url": "https://haydncomley.com",
     "email": "haydncomley@gmail.com"
   },
-  "version": "0.1.7",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
     "new": "cross-env npx generate-react-cli component $npm_config_name --type=$npm_config_type"
   },
   "dependencies": {
@@ -34,9 +34,7 @@
     "react-i18next": "^11.18.6",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
     "redux-persist": "^6.0.0",
-    "sass": "^1.52.3",
     "typescript": "^4.7.4",
     "unity-web-link": "^0.0.2",
     "web-vitals": "^2.1.4"
@@ -64,10 +62,15 @@
     "@types/react-dom": "^18.0.5",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
+    "@vitejs/plugin-react": "^2.2.0",
     "eslint": "^8.18.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-react": "^7.30.0",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
-    "eslint-plugin-unused-imports": "^2.0.0"
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "sass": "^1.56.1",
+    "vite": "^3.2.4",
+    "vite-plugin-svgr": "^2.2.2",
+    "vite-tsconfig-paths": "^3.6.0"
   }
 }
