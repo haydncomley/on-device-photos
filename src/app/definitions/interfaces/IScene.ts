@@ -1,3 +1,5 @@
+import { SectionData } from './IStudioSection';
+
 export interface IScene {
     id: string;
     name: string;
@@ -6,4 +8,6 @@ export interface IScene {
     camera_position?: string;
     // Device
     device_position?: string;
+    // Sections
+    sections?: SectionData[];
 }

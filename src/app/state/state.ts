@@ -16,12 +16,11 @@ const rootReducer = (state: any, action: PayloadAction<any>) => {
 	return appReducer(state, action);
 };
 
-const persistConfig = {
+const persistedReducer = persistReducer({
 	key: 'onDevicePhotos',
 	storage,
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+	whitelist: ['scenes']
+}, rootReducer);
 
 export const store = configureStore({
 	middleware(getDefaultMiddleware) {

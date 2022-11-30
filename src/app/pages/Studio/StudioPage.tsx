@@ -6,7 +6,7 @@ import MenuRow, { MenuRowStyle } from '../../components/MenuRow/MenuRow';
 import MenuRowAction from '../../components/MenuRowAction/MenuRowAction';
 import Toolbar from '../../components/Toolbar/Toolbar';
 import { StudioSections } from '../../data/studio/StudioSections.data';
-import { IStudioSection, IStudioSectionOption } from '../../definitions/interfaces/IStudioSection';
+import { IStudioSection, IStudioSectionOption, SectionData } from '../../definitions/interfaces/IStudioSection';
 import { useUnityWebLink } from '../../hooks/useUnityWebLink';
 import { applicationLoader, setInitialised } from '../../state/slices/General.slice';
 import { useTypedDispatch, useTypedSelector } from '../../state/state';
@@ -15,11 +15,8 @@ import appDetails from '../../../../package.json';
 import { Helmet } from 'react-helmet-async';
 import { useTrackPage } from '../../hooks/useTrackPage';
 import SceneSelector from '../../components/SceneSelector/SceneSelector';
-
-interface SectionData {
-	tag: string;
-	items: { [key: string]: unknown };
-}
+import { useEventListener } from '../../hooks/useEventManager';
+import { setScene } from '../../state/slices/Scenes.slice';
 
 export interface IStudioPage {
 }
@@ -37,6 +34,7 @@ const StudioPage = ({ }: IStudioPage) => {
 	const canvasRef = useRef<HTMLCanvasElement>();
 	const isLoading = useTypedSelector(state => state.general.loading);
 	const initialised = useTypedSelector(state => state.general.initialised);
+	const scene = useTypedSelector((state) => state.scenes.current);
 	
 	const [ sectionData, setSectionData ] = useState<SectionData[]>([]);
 	const [ sideOpen, setSideOpen ] = useState(true);
@@ -94,7 +92,6 @@ const StudioPage = ({ }: IStudioPage) => {
 		}, 2000);
 	}, [unityReady]);
 
-
 	useEffect(() => {
 		if (sectionData.length !== 0) return;
 		dispatch(applicationLoader(true));
@@ -118,16 +115,70 @@ const StudioPage = ({ }: IStudioPage) => {
 		});
 	};
 
-	const updateSection = (section: MenuRowStyle, key: string, value: unknown) => {
+	const updateSection = useCallback((section: MenuRowStyle, key: string, value: unknown) => {
 		if (sectionData.length === 0) return;
+		const dataTransformer = sections.find((x) => x.style === section)?.options.find((x) => x.key === key)?.transform;
+		const newValue = dataTransformer ? dataTransformer(value) : value;
+
 		const prev = sectionData[sections.findIndex((x) => x.style === section)].items[key];
-		if (prev == value) return;
-		sectionData[sections.findIndex((x) => x.style === section)].items[key] = value;
-	
-		if (!unity.current) return;
-		const action = `set${section.toString()}`;
-		unity.current.Send(action, sectionData[sections.findIndex((x) => x.style === section)].items);
-	};
+		if (prev == newValue) return;
+
+		setSectionData((last) => {
+			const data = JSON.parse(JSON.stringify(last));
+			console.log('TEST TEST', data, key, data[sections.findIndex((x) => x.style === section)].items[key], newValue);
+			data[sections.findIndex((x) => x.style === section)].items[key] = newValue;
+
+			if (!unity.current) return data;
+			const action = `set${section.toString()}`;
+			unity.current.Send(action, data[sections.findIndex((x) => x.style === section)].items);
+
+			return data;
+		});
+
+	}, [setSectionData, sectionData, unity]);
+
+	const reloadCurrentScene = useCallback(() => {
+		console.log('Called Reset');
+		if (scene?.sections) {
+			console.log(scene!.sections![1].items);
+		}
+		// setSectionData(scene.sections);
+			
+		// setTimeout(() => {
+		// 	console.log('Updating');
+		// 	updateAllSections();
+		// }, 200);
+		// }
+
+		// 	setTimeout(() => {
+		// 		updateAllSections();
+		// 	}, 20);
+		// }
+		// const cameraRotation = scene?.camera_position;
+		// const deviceRotation = scene?.device_position;
+
+		// if (cameraRotation) sendUnityAction('setCameraRotation', cameraRotation);
+		// if (deviceRotation) sendUnityAction('setDeviceRotation', deviceRotation);
+	}, [scene, setSectionData]);
+
+	useEventListener('scene-reset', () => {
+		reloadCurrentScene();
+	}, [reloadCurrentScene, scene]);
+
+	useEffect(() => {
+		if (!unity?.current || !unityReady || !initialised) return;
+		reloadCurrentScene();
+	}, [initialised, unityReady, scene]);
+
+	useEventListener('save-scene', () => {
+		if (scene?.id) {
+			console.log('Save Scene Sections', sectionData);
+			dispatch(setScene({
+				id: scene?.id,
+				sections: sectionData
+			}));
+		}
+	}, [scene, sectionData]);
 
 	const renderSectionItem = useCallback((item: IStudioSectionOption, style: MenuRowStyle, index: number) => {
 		return <MenuRow

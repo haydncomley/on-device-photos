@@ -15,5 +15,12 @@ export interface IStudioSectionOption {
     type: MenuActionType;
     key: string;
     default: unknown;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    transform?: (value: any) => any;
     options?: { label: TranslationKey, value: unknown }[];
+}
+
+export interface SectionData {
+	tag: string;
+	items: { [key: string]: unknown };
 }

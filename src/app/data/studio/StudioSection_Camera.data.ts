@@ -12,6 +12,7 @@ export const StudioSection_Camera: IStudioSection = {
 			key: 'isPerspective',
 			default: true,
 			type: MenuActionType.Dropdown,
+			// transform: (value) => { console.log('Forcing Boolean', value); return Boolean(value); },
 			options: [
 				{ label: 'camera_OptionPerspective_Perspective', value: true },
 				{ label: 'camera_OptionPerspective_Orthographic', value: false },
