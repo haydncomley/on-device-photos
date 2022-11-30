@@ -5,10 +5,10 @@
     "url": "https://haydncomley.com",
     "email": "haydncomley@gmail.com"
   },
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "scripts": {
-    "start": "vite",
+    "start": "vite --host",
     "build": "tsc && vite build",
     "serve": "vite preview",
     "new": "cross-env npx generate-react-cli component $npm_config_name --type=$npm_config_type"
