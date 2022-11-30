@@ -222,11 +222,21 @@ $stripeAngle: 45deg;
     text-align: center;
     padding: .6rem;
     color: theme.Text('background', .5);
-    font-weight: bold;
-    text-decoration: none;
-    transition: .1s ease;
+    position: relative;
 
-    &:hover {
-        color: theme.Text('background', 1);
+    &>p {
+        margin: 0;
+    }
+
+    &>a {
+        color: theme.Text('background', .5);
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: bold;
+        transition: .1s ease;
+
+        &:hover {
+            color: theme.Text('background', 1);
+        }
     }
 }

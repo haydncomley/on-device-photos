@@ -216,11 +216,13 @@ const StudioPage = ({ }: IStudioPage) => {
 					<Icon name='chevron_left' />
 				</button>
 
-				<a
-					className={styles.ShamelessBranding}
-					href='https://HaydnComley.com'
-					rel="noreferrer"
-					target='_blank'>{t('_madeBy')} Haydn Comley</a>
+				<div className={styles.ShamelessBranding}>
+					<p>{ version }</p>
+					<a
+						href='https://HaydnComley.com'
+						rel="noreferrer"
+						target='_blank'>{t('_madeBy')} Haydn Comley</a>
+				</div>
 			</div>
 			<div
 				className={classlist(

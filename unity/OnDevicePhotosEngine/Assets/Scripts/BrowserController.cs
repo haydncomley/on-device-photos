@@ -57,6 +57,11 @@ public class BrowserController : MonoBehaviour
             cameraController.cameraIsPerspective = settings.isPerspective;
         }));
 
+        UnityJS.Listen<int>("setCameraSteps", ((steps) =>
+        {
+            cameraController.cameraSteps = steps;
+        }));
+
         UnityJS.Listen<string>("setCameraRotation", ((res) =>
         {
             cameraController.SetCameraRotation(StringToVector(res));

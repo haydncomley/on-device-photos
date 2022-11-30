@@ -178,6 +178,8 @@ MonoBehaviour:
   cameraControlStyle: 0
   cameraIsPerspective: 1
   cameraZoom: 1
+  cameraSteps: 15
+  isStepping: 0
   cameraControlSpeed: 0.5
   cameraControlSmoothing: 1
   cameraControlInvertX: 1

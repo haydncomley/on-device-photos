@@ -22,6 +22,8 @@ public class CameraController : MonoBehaviour
     public float cameraZoom = .69f;
 
     [Header("Public")]
+    public int cameraSteps = 15;
+    public bool isStepping = false;
     public float cameraControlSpeed = 1;
     public float cameraControlSmoothing = 1;
     public bool cameraControlInvertX = true;
@@ -61,17 +63,7 @@ public class CameraController : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
         {
-            ResetCameraMovement();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            ResetCameraRotation();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            ResetDeviceRotation();
+            ZeroCameraMovement();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
@@ -79,6 +71,8 @@ public class CameraController : MonoBehaviour
             ScreenCapture.CaptureScreenshot("Picture.png");
             Debug.Log(Application.persistentDataPath);
         }
+
+        isStepping = Input.GetKey(KeyCode.LeftShift);
 
         AdjustCamera();
     }
@@ -96,6 +90,7 @@ public class CameraController : MonoBehaviour
             if (Vector3.Distance(transform.eulerAngles, targetCameraRotation) < 0.01)
             {
                 forcingCameraRotation = false;
+                targetCameraRotation = targetDeviceRotation;
             }
         }
 
@@ -110,6 +105,7 @@ public class CameraController : MonoBehaviour
             if (Vector3.Distance(device.eulerAngles, targetDeviceRotation) < 0.01)
             {
                 forcingDeviceRotation = false;
+                targetDeviceRotation = targetDeviceRotation;
             }
         }
     }
@@ -148,7 +144,7 @@ public class CameraController : MonoBehaviour
             cameraMovement.y *= -1;
         }
 
-        Vector3 targetTransform = movingDevice ? device.eulerAngles : transform.eulerAngles;
+        Vector3 targetTransform = movingDevice ? targetDeviceRotation : targetCameraRotation;
 
         if (movingDevice && !forcingDeviceRotation)
         {
@@ -166,16 +162,33 @@ public class CameraController : MonoBehaviour
                 cameraMovement.x,
                 0
             );
+
             targetCameraRotation.x = ClampAngle(targetCameraRotation.x);
         }
 
+        Vector3 moveTowardsThis = movingDevice ? targetDeviceRotation : targetCameraRotation;
 
-        (movingDevice ? device : transform).rotation = Quaternion.Euler(movingDevice ? targetDeviceRotation : targetCameraRotation);
+        if (isStepping && !forcingCameraRotation)
+        {
+            moveTowardsThis.x = ClampToFactor(moveTowardsThis.x, cameraSteps);
+            moveTowardsThis.y = ClampToFactor(moveTowardsThis.y, cameraSteps);
+            moveTowardsThis.z = ClampToFactor(moveTowardsThis.z, cameraSteps);
+        }
+
+        (movingDevice ? device : transform).rotation = Quaternion.Euler(moveTowardsThis);
 
         lastCursorPos = Input.mousePosition;
     }
 
-    public void ResetCameraMovement()
+    public float ClampToFactor(float value, float factor)
+    {
+        return (float)System.Math.Round(
+                    (value / (double)factor),
+                    System.MidpointRounding.AwayFromZero
+                ) * factor;
+    }
+
+    public void ZeroCameraMovement()
     {
         currentCursorPos = Vector2.zero;
         lastCursorPos = Vector2.zero;
@@ -188,7 +201,8 @@ public class CameraController : MonoBehaviour
         targetCameraRotation = Vector3.zero;
     }
 
-    public void SetCameraRotation(Vector3 location) {
+    public void SetCameraRotation(Vector3 location)
+    {
         forcingCameraRotation = true;
         targetCameraRotation = location;
     }
@@ -206,13 +220,6 @@ public class CameraController : MonoBehaviour
 
     private float ClampAngle(float value)
     {
-        if (value > 180)
-        {
-            return Mathf.Clamp(value, 270, 361);
-        }
-        else
-        {
-            return Mathf.Clamp(value, -1, 90);
-        }
+        return Mathf.Clamp(value, -90, 90);
     }
 }
